@@ -1,0 +1,13 @@
+package com.example.appscheck.Excuse.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ExcuseRequestDto {
+    private String excuseDetail;
+    private int memberId;
+}
