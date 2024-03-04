@@ -83,9 +83,11 @@ public class CheckingController {
             checkStatusResponseDto.setStampTime(checking.getStampTime());
             checkStatusResponseDto.setCheckStatus(checking.getCheckStatus());
 
-            Excuse excuse = excuseService.findByMemberId(memberId);
-            if (excuse != null) {
-                checkStatusResponseDto.setExcuseDetail(excuse.getExcuseDetail());
+            // 해당 체크에 대한 결석 사유를 가져옴
+            if (checking.getExcuse() != null) {
+                checkStatusResponseDto.setExcuseDetail(checking.getExcuse().getExcuseDetail());
+            } else {
+                checkStatusResponseDto.setExcuseDetail("No excuse provided"); // 결석 사유가 없는 경우 기본값 설정
             }
 
             selfResponseDtos.add(checkStatusResponseDto);

@@ -1,5 +1,6 @@
 package com.example.appscheck.Excuse.domain;
 
+import com.example.appscheck.Event.domain.entity.Event;
 import com.example.appscheck.Member.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,5 +24,9 @@ public class Excuse {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @ManyToOne
+    @JoinColumn(name = "excuse_event_id")
+        private Event event;
 
 }

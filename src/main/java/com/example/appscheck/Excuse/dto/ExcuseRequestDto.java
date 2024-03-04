@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class ExcuseRequestDto {
     private String excuseDetail;
     private int memberId;
+    private int eventId;
 }
