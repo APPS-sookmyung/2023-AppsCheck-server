@@ -1,17 +1,14 @@
 name: Build and Deploy Spring Boot to AWS EC2
 
 on:
-  push:
+  pull_request:
     branches: [ "main" ]
 
-
-# --------------------------추가
 env:
   PROJECT_NAME: appscheck
   BUCKET_NAME: appscheck-cicd-bucket
   CODE_DEPLOY_APP_NAME: appscheckapp
   DEPLOYMENT_GROUP_NAME: appscheckapp
-# --------------------------추가
 
 jobs:
   deploy:
@@ -31,7 +28,6 @@ jobs:
       - name: Build and Test
         run: ./gradlew build test
 
-      # --------------------------추가
       - name: Make Zip File
         run: zip -qq -r ./$GITHUB_SHA.zip .
         shell: bash
@@ -47,9 +43,4 @@ jobs:
         run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
 
       - name: Code Deploy To EC2 instance
-        run: aws deploy create-deployment
-          --application-name $CODE_DEPLOY_APP_NAME
-          --deployment-config-name CodeDeployDefault.AllAtOnce
-          --deployment-group-name $DEPLOYMENT_GROUP_NAME
-          --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
-# --------------------------추가
+        run: aws deploy create-deployment --application-name $CODE_DEPLOY_APP_NAME --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name $DEPLOYMENT_GROUP_NAME --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
