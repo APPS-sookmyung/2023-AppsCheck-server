@@ -4,12 +4,19 @@ os: linux
 files:
   - source: /
     destination: /home/ubuntu/appscheck
+    overwrite: yes
 permissions:
   - object: /home/ubuntu/appscheck/
+    pattern: "**"
     owner: ubuntu
     group: ubuntu
 hooks:
+  ApplicationStart: # deploy.sh를 ubuntu권한으로 실행합니다.
+    - location: scripts/deploy.sh
+      timeout: 60 # 스크립트 실행 60초 이상 수행되면 실패가 됩니다.
+      runas: ubuntu
   AfterInstall:
     - location: scripts/deploy.sh
       timeout: 60
       runas: ubuntu
+
