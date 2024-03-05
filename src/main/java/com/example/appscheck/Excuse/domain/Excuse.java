@@ -27,6 +27,6 @@ public class Excuse {
 
     @ManyToOne
     @JoinColumn(name = "excuse_event_id")
-        private Event event;
+    private Event event;
 
 }

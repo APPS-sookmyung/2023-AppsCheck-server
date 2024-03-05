@@ -40,4 +40,10 @@ public class ExcuseService {
         return excuseRepository.findByMember_MemberId(memberId);
     }
 
+    //checking entity 에서 excuseDetail 가지고 올 수 있도록
+    @Transactional
+    public Excuse findByMemberIdAndEventId(int memberId, Event event) {
+        return excuseRepository.findByMember_MemberIdAndEvent(memberId, event);
+    }
 }
+

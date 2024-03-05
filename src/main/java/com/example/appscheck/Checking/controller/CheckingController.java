@@ -74,6 +74,7 @@ public class CheckingController {
     @ResponseStatus(OK)
     @GetMapping("/self/check")
     public Response checkSelfStatus(@RequestParam int memberId) {
+        // 해당 memberId에 해당하는 멤버의 체크 정보를 가져옴
         List<Checking> selfCheck = checkingService.getCheckingsByMemberId(memberId);
         List<CheckStatusResponseDto> selfResponseDtos = new ArrayList<>();
 
@@ -84,8 +85,9 @@ public class CheckingController {
             checkStatusResponseDto.setCheckStatus(checking.getCheckStatus());
 
             // 해당 체크에 대한 결석 사유를 가져옴
-            if (checking.getExcuse() != null) {
-                checkStatusResponseDto.setExcuseDetail(checking.getExcuse().getExcuseDetail());
+            String excuseDetail = checkingService.getExcuseDetailByMemberIdAndEventId(memberId, checking.getEvent());
+            if (excuseDetail != null) {
+                checkStatusResponseDto.setExcuseDetail(excuseDetail);
             } else {
                 checkStatusResponseDto.setExcuseDetail("No excuse provided"); // 결석 사유가 없는 경우 기본값 설정
             }
@@ -95,6 +97,5 @@ public class CheckingController {
 
         return success(SELF_ALLCHECK_SUCCESS, selfResponseDtos);
     }
-
 
 }

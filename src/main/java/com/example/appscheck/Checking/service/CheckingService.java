@@ -4,6 +4,8 @@ import com.example.appscheck.Checking.domain.Checking;
 import com.example.appscheck.Checking.domain.CheckingRepository;
 import com.example.appscheck.Checking.dto.CheckRequestDto;
 import com.example.appscheck.Event.domain.entity.Event;
+import com.example.appscheck.Excuse.domain.Excuse;
+import com.example.appscheck.Excuse.service.ExcuseService;
 import com.example.appscheck.Member.domain.Member;
 import com.example.appscheck.Member.service.AuthServiceImpl;
 import jakarta.transaction.Transactional;
@@ -18,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CheckingService {
     private final CheckingRepository checkingRepository;
+    private final ExcuseService excuseService;
 
     //출석체크 정보 등록
     @Transactional
@@ -58,6 +61,16 @@ public class CheckingService {
     //개인 회원이 출결 데이터 조회
     public List<Checking> getCheckingsByMemberId(int memberId) {
         return checkingRepository.findByMember_MemberId(memberId);
+    }
+
+    // memberId와 eventId를 기반으로 ExcuseDetail 가져오는 메서드 추가
+    @Transactional
+    public String getExcuseDetailByMemberIdAndEventId(int memberId, Event event) {
+        Excuse excuse = excuseService.findByMemberIdAndEventId(memberId, event);
+        if (excuse != null) {
+            return excuse.getExcuseDetail();
+        }
+        return null; // Excuse가 없을 경우 null 반환하거나 다른 처리 수행
     }
 
 }
