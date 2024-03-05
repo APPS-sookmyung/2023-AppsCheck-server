@@ -92,6 +92,10 @@ public class SecurityConfig extends WebSecurityConfiguration {
 
                 // JWT 인증 필터
                 .addFilterBefore(new JwtFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exception -> exception
+                        .accessDeniedHandler(jwtAccessDeniedHandler)
+                        .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                )
                 // JWT 예외처리 필터
                 //.addFilterBefore(new JwtExceptionFilter(),JwtFilter.class)
 
